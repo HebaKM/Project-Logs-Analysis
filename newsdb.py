@@ -28,33 +28,11 @@ query_3 = """SELECT error_total.date,
              WHERE (CAST(error_total.num AS NUMERIC) / total.num) * 100 > 1;"""
 
 
-def get_article():
-    """Return the three most popular artiles with their views coount."""
-    db = psycopg2.connect(database=DBNAME)
-    c = db.cursor()
-    c.execute(query_1)
-    articles = c.fetchall()
-    db.close()
-
-    question = "1.What are the most popular three articles of all time?"
+def print_results(results, question):
+    """Prints the results obtained from the database."""
     row_format = "\n* {} - {} views"
     print(question)
-    for row in articles:
-        print(row_format.format(row[0], str(row[1])))
-
-
-def get_author():
-    """Return all authors from the database, ordered by their popularity."""
-    db = psycopg2.connect(database=DBNAME)
-    c = db.cursor()
-    c.execute(query_2)
-    authors = c.fetchall()
-    db.close()
-
-    question = "\n2.Who are the most popular article authors of all time?"
-    row_format = "\n* {} - {} views"
-    print(question)
-    for row in authors:
+    for row in results:
         print(row_format.format(row[0], str(row[1])))
 
 
@@ -67,12 +45,26 @@ def get_day():
     db.close()
 
     question = "\n3.On which days did more than 1% of requests lead to errors?"
-    row_format = "\n* {} - {} errors"
+    row_format = "\n* {} - {}% errors"
     print(question)
     print(row_format.format(day[0][0], str(day[0][1])))
 
 
+def run_query(question, query):
+    """Return all authors/articles from the database, ordered by their
+    popularity/views."""
+    db = psycopg2.connect(database=DBNAME)
+    c = db.cursor()
+    c.execute(query)
+    results = c.fetchall()
+    db.close()
+
+    print_results(results, question)
+
+
 if __name__ == '__main__':
-    get_article()
-    get_author()
+    run_query("1.What are the most popular three articles of all time?",
+              query_1)
+    run_query("\n2.Who are the most popular article authors of all time?",
+              query_2)
     get_day()
