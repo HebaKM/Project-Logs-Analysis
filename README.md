@@ -44,4 +44,4 @@ CREATE VIEW total AS
     GROUP BY date
     ORDER BY date);
 ```
-7. Lastly, run `python logs-analysis.py`.    
+7. Lastly, run `python3 newsdb.py`.    
