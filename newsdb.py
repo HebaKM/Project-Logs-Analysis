@@ -5,7 +5,7 @@ DBNAME = "news"
 
 query_1 = """SELECT title, count(*) AS views
              FROM articles, log
-             WHERE path LIKE CONCAT('/article/', slug)
+             WHERE path = CONCAT('/article/', slug)
              GROUP BY title
              ORDER BY views DESC
              LIMIT 3;"""

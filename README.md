@@ -24,24 +24,26 @@ To run this project, you'll need database software (provided by a Linux virtual 
 ## Steps to run this project
 1. Open terminal and navigate to the FSND-Virtual-Machine directory, then run the command: `cd vagrant`.
 2. Inside the vagrant subdirectory, run the command `vagrant up`. This will cause Vagrant to download the Linux operating system and install it.
-3. Next, log into the virtual machine.: `vagrant up vagrant ssh`
+3. Next, log into the virtual machine: `vagrant up` `vagrant ssh`
 4. Inside the VM, change directory to /vagrant: `cd /vagrant`
-5. run the command `psql -d news -f newsdata.sql` to connect to your installed database server and execute the SQL commands in the downloaded file, creating tables and populating them with data
+5. Run the command `psql -d news -f newsdata.sql` to connect to your installed database server and execute the SQL commands in the downloaded file, creating tables and populating them with data
 6. Run the command `psql news` to connect to the news database. Then run the following queries to create the views needed to run the queries:  
 
-```sql
-CREATE VIEW error_total AS
-    (SELECT DATE(time) AS date, COUNT(*) AS num
-    FROM log
-    WHERE status = '404 NOT FOUND'
-    GROUP BY date
-    ORDER BY date);
-```
-```sql
-CREATE VIEW total AS
-    (SELECT DATE(time) AS date, COUNT(*) AS num
-    FROM log
-    GROUP BY date
-    ORDER BY date);
-```
+    ```sql
+    CREATE VIEW error_total AS
+        (SELECT DATE(time) AS date, COUNT(*) AS num
+        FROM log
+        WHERE status = '404 NOT FOUND'
+        GROUP BY date
+        ORDER BY date);
+    ```
+    ```sql
+    CREATE VIEW total AS
+        (SELECT DATE(time) AS date, COUNT(*) AS num
+        FROM log
+        GROUP BY date
+        ORDER BY date);
+    ```
+
+    Alternatively, You could also download this [sql file]() and then run `psql -d news -f create_views.sql` to create these views.
 7. Lastly, run `python3 newsdb.py`.    
